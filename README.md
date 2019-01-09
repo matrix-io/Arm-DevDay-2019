@@ -54,9 +54,9 @@ It's now time to grab the IP Address of your Pi. If you're not sure how, you can
 </div>
 
 Open an SSH enabled terminal application on your 
-- Windows 10: PowerShell
-- macOS/Linux: Terminal
-- Windows 7 & 8: [Download Putty](https://www.putty.org/)
+- **Windows 10**: PowerShell
+- **macOS/Linux**: Terminal
+- **Windows 7 & 8**: [Download Putty](https://www.putty.org/)
 
 Enter the following command to SSH into your Pi:
 ```
@@ -75,9 +75,9 @@ When prompted for a password, type `raspberry` followed by the enter key. Your t
 We highly recommend installing an SFTP client while following along with the workshop. 
 
 Open an SSH enabled terminal application on your 
-- Windows 7 or later: [CyberDuck.io](https://cyberduck.io/)
-- macOS: [CyberDuck.io](https://cyberduck.io/)
-- Linux: [FileZilla](https://filezilla-project.org/) or mount the Pi as an external drive.
+- **Windows 7 or later**: [CyberDuck.io](https://cyberduck.io/)
+- **macOS**: [CyberDuck.io](https://cyberduck.io/)
+- **Linux**: [FileZilla](https://filezilla-project.org/) or mount the Pi as an external drive.
 
 We will be using [CyberDuck.io](https://cyberduck.io/) to edit and upload files with our preferred text editor ([Visual Studio Code](https://code.visualstudio.com/)).
 
