@@ -40,6 +40,14 @@ network={
 After you verify that your information is correct, drag & drop the file into the `boot` volume. You can now eject and insert the Micro SD Card into your Raspberry Pi. The MATRIX Creator should be attached as well.
 
 ### 3. SSH Into Your Raspberry Pi
-Before powering on, ensure that your setup matches the gif below
+Before powering on, ensure that your setup matches the gif below. Your Raspberry Pi should connect to the WiFi in a few moments. 
 
 ![](images/device_setup.gif)
+
+It's now time to grab the IP Address of your Pi. If you're not sure how, you can download one of the following network scanners to your smartphone.
+
+<div align="center">
+<a href="https://itunes.apple.com/us/app/inet-network-scanner/id340793353?mt=8"><img width="200" src="images/ios_logo.png"/></a>
+<a href="https://play.google.com/store/apps/details?id=com.overlook.android.fing&hl=en"><img width="200" src="images/google_play_logo.png"/></a>
+</div>
+
