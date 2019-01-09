@@ -1,4 +1,4 @@
-# Pre-Guide Setup
+# Pre-Workshop Setup
 Follow this section to prepare all the necessary hardware and software so you can follow along with the Arm DevDay MATRIX Workshop.
 
 ## Required Hardware
@@ -40,6 +40,8 @@ network={
 After you verify that your information is correct, drag & drop the file into the `boot` volume. You can now eject and insert the Micro SD Card into your Raspberry Pi. The MATRIX Creator should be attached as well.
 
 ### 3. SSH Into Your Raspberry Pi
+The following steps will allow you to remotely execute terminal commands to your Raspberry Pi from your computer.
+
 Before powering on, ensure that your setup matches the gif below. Your Raspberry Pi should connect to the WiFi in a few moments. 
 
 ![](images/device_setup.gif)
@@ -51,3 +53,35 @@ It's now time to grab the IP Address of your Pi. If you're not sure how, you can
 <a href="https://play.google.com/store/apps/details?id=com.overlook.android.fing&hl=en"><img width="200" src="images/google_play_logo.png"/></a>
 </div>
 
+Open an SSH enabled terminal application on your 
+- Windows 10: PowerShell
+- macOS/Linux: Terminal
+- Windows 7 & 8: [Download Putty](https://www.putty.org/)
+
+Enter the following command to SSH into your Pi:
+```
+ssh pi@YOUR.PI.IP.HERE
+```
+```
+#example
+ssh pi@192.168.1.129
+```
+
+When prompted for a password, type `raspberry` followed by the enter key. Your terminal screen should be similar to the image below.
+
+<img width=700 src="images/pi_login_screen.png" />
+
+### 4. Download An SFTP Client (Optional)
+We highly recommend installing an SFTP client while following along with the workshop. 
+
+Open an SSH enabled terminal application on your 
+- Windows 7 or later: [CyberDuck.io](https://cyberduck.io/)
+- macOS: [CyberDuck.io](https://cyberduck.io/)
+- Linux: [FileZilla](https://filezilla-project.org/) or mount the Pi as an external drive.
+
+We will be using [CyberDuck.io](https://cyberduck.io/) to edit and upload files with our preferred text editor ([Visual Studio Code](https://code.visualstudio.com/)).
+
+### 5. Good To Go!
+You should now be all set to follow along with our workshop for Arm DevDay. Feel free to ask us any questions on our [community site](https://community.matrix.one/) if you have any questions.
+
+Hope to see you **January 22, 2019 9 AM PST**!
