@@ -53,7 +53,7 @@ It's now time to grab the IP Address of your Pi. If you're not sure how, you can
 <a href="https://play.google.com/store/apps/details?id=com.overlook.android.fing&hl=en"><img width="200" src="images/google_play_logo.png"/></a>
 </div>
 
-Open an SSH enabled terminal application on your 
+Open an SSH enabled terminal application on your computer:
 - **Windows 10**: PowerShell
 - **macOS/Linux**: Terminal
 - **Windows 7 & 8**: [Download Putty](https://www.putty.org/)
