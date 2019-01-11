@@ -5,7 +5,7 @@ added here, as well as the general instructions we are following.
 
 ## Guides:
 
-- ### [Pre-Workshop Guide](PreWorkshop.md)
+- ### [Pre-Workshop Setup](PreWorkshop.md)
 
 - ### ~~[Workshop Guide](Workshop.md)~~ (Coming Soon)
 
@@ -13,3 +13,4 @@ added here, as well as the general instructions we are following.
 - ### [Arm DevDay Website](https://events.hackster.io/armdevday)
 - ### [Workshop Image](https://drive.google.com/file/d/1bsHYOEeLOPSTM4tcnqnZR0bwS8wpCTGi/view)
 - ### [MATRIX Community](https://community.matrix.one)
+- ### [Snips.ai Website](https://snips.ai/)
