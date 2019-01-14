@@ -102,15 +102,118 @@ client.on('message', function(topic, message) {
     // On Conversation End
     case 'hermes/dialogueManager/sessionEnded':
       console.log('Session Ended');
-      led({green: 100});
+      led({});// lights off
       break;
   }
 });
 ```
 </details>
 
-## 4. Creating A Snips Assistant
-Sign into your [Snips.ai](https://console.snips.ai/login) and create an assistant. Once created, add a new application named `lights`.
+## 4. Creating A Snips Assistant & App
+Sign into your [Snips.ai](https://console.snips.ai/login) and create an assistant. Feel free to choose the wakeword you want. Once created, add a new application named `lights`.
 
 <img src="images/create_assistant_and_app.gif" />
 
+## 5. Adding an Intent
+> WORK IN PROGRESS
+- create lightState intent
+- add on/off slots
+- create 6 training examples
+- deploy to assistant
+
+## 6. Catching Intents In assistant.js
+<details close>
+<summary>New Assistant Code</summary>
+
+```js
+// MATRIX Core Dependencies
+var zmq = require('zeromq');
+var core = require('matrix-protos').matrix_io.malos.v1;
+var matrix_ip = '127.0.0.1';
+var matrix_everloop_base_port = 20021;
+var matrix_device_leds = 35;// Hard coded LED count
+// Snips.ai Dependencies
+var snipsUserName = "YOUR_SNIPS_USERNAME_HERE";
+var mqtt = require('mqtt');
+var client = mqtt.connect('mqtt://' + matrix_ip, { port: 1883 });
+
+// - Sets MATRIX LEDs
+function led(colors){
+  // Create & connect Pusher socket to Base Port
+  var configSocket = zmq.socket('push');
+  configSocket.connect('tcp://' + matrix_ip + ':' + matrix_everloop_base_port);
+
+  // Create an empty Everloop image
+  var image = core.io.EverloopImage.create();
+  // Set each LED color in Everloop image
+  image.led = new Array(matrix_device_leds).fill(colors);
+
+  // Create MATRIX configuration and add Everloop image
+  var config = core.driver.DriverConfig.create({'image': image});
+  // Send configuration
+  configSocket.send(core.driver.DriverConfig.encode(config).finish());
+}
+
+// - Snips response property for our MQTT client
+client.snipsRespond = function(payload){
+  client.publish('hermes/dialogueManager/endSession', JSON.stringify({
+    sessionId: payload.sessionId,
+    text: payload.text
+  }));
+};
+
+// MQTT Topics
+var wakeword = 'hermes/hotword/default/detected';
+var sessionEnd = 'hermes/dialogueManager/sessionEnded';
+var lightState = 'hermes/intent/'+snipsUserName+':lightState';
+
+// On connection to Snips' MQTT server
+client.on('connect', function() {
+  console.log("Connected to " + matrix_ip);
+  // Subscribe to each event (MQTT Topic)
+	client.subscribe(wakeword);
+  client.subscribe(sessionEnd);
+  client.subscribe(lightState); 
+});
+// On data from Snips' MQTT server
+var ledColors = {};
+client.on('message', function(topic, message) {
+  // Extract message (convert string to JSON)
+  var message = JSON.parse(message);
+
+  switch(topic) {
+    // On Wakeword
+    case wakeword:
+      console.log('Wakeword Detected');
+      led({blue: 100});
+      break;
+
+    // On Light State Change
+    case lightState:
+      // set LEDs off
+      ledColors = {};
+      // see if user wants lights on
+      try{
+        if (message.slots[0].rawValue === 'on')
+          ledColors = {red: 255, green: 69};
+      }
+      finally{
+        // Apply LEDs
+        led(ledColors);
+        // Snips Response
+        client.snipsRespond({
+          sessionId: message.sessionId, 
+          text: 'I have changed the lights!'
+        });
+        break;
+      }
+
+    // On Conversation End
+    case sessionEnd:
+      console.log('Session Ended');
+      break;
+  }
+  
+});
+```
+</details>
