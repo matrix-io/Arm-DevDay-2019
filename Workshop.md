@@ -15,7 +15,7 @@ node helloWorld.js
 ```
 Your MATRIX Creator should match the image below.
 
-> For your sanity, the brightness has been lowered.
+> For your sanity, LED brightness has been lowered.
 
 ![](images/matrix-hello-world.gif)
 
@@ -26,11 +26,33 @@ By this step, you should have a [snips.ai account](https://console.snips.ai/logi
 ```bash
 sam login
 ```
+
+**Check if Snips is running.**
+```bash
+sam status
+```
+```
+# Example output
+# If all services are not (running), use the `sam init` command
+
+Service status:
+
+snips-analytics .............. 0.60.10 (running)
+snips-asr .................... 0.60.10 (running)
+snips-audio-server ........... 0.60.10 (running)
+snips-dialogue ............... 0.60.10 (running)
+snips-hotword ................ 0.60.10 (running)
+snips-nlu .................... 0.60.10 (running)
+snips-skill-server ........... 0.60.10 (running)
+snips-tts .................... 0.60.10 (running)
+
+```
+
 **Connect to your Raspberry Pi.**
 ```bash
 sam connect YOUR.PI.IP.HERE
 ```
-**Begin viewing the Snips event stream.** This will let us verify if our intents are being heard.
+**Begin viewing the Snips event stream.** This will let us verify if your intents are being heard.
 ```bash
 sam watch
 ```
@@ -49,10 +71,10 @@ npm install mqtt --save
 ```
 With all the required dependencies installed, you can now open `assistant.js ` with your preferred editor (we will be using [VSCode](https://code.visualstudio.com/) through [CyberDuck.io](https://cyberduck.io/)).
 
-The code below will show you how to set your MATRIX LEDs and how to listen to Snips MQTT events.
+Below is an example script for how to set your MATRIX LEDs and listen to Snips MQTT events.
 <details close>
 <summary>
-assistant.js
+Initial assistant.js
 </summary>
 
 ```js
@@ -63,7 +85,7 @@ var matrix_ip = '127.0.0.1';
 var matrix_everloop_base_port = 20021;
 var matrix_device_leds = 35;// Hard coded LED count
 // Snips.ai Dependencies
-var snipsUserName = "YOUR_SNIPS_USERNAME_HERE";
+var snipsUserName = 'YOUR_SNIPS_USERNAME_HERE';
 var mqtt = require('mqtt');
 var client  = mqtt.connect('mqtt://' + matrix_ip, { port: 1883 });
 
@@ -110,20 +132,40 @@ client.on('message', function(topic, message) {
 </details>
 
 ## 4. Creating A Snips Assistant & App
-Sign into your [Snips.ai](https://console.snips.ai/login) and create an assistant. Feel free to choose the wakeword you want. Once created, add a new application named `lights`.
+**Sign into your [Snips.ai](https://console.snips.ai/login) and create an assistant. Feel free to choose the wakeword you want. Once created, make a new application named `lights`.**
 
-<img src="images/create_assistant_and_app.gif" />
+<img width=600 src="images/create_assistant_and_app.gif" />
 
 ## 5. Adding an Intent
-> WORK IN PROGRESS
-- create lightState intent
-- add on/off slots
-- create 6 training examples
-- deploy to assistant
+Intents are what Snips uses to handle user requests. For this Assistant, we'll start by creating an intent for turning On/Off the MATRIX Creator's LEDs.
+
+**Create a new intent called `lightState` for your `lights` app.**
+
+<img width=600 src="images/create_intent.gif" />
+
+Once you've defined your intent, you need to extract whether the user want their lights `on` or `off`. This is where slots come in.
+
+**Create a new slot called `power` and a custom slot type with the same name.** 
+
+<img width=500 src="images/create_power_slot.png" />
+
+**Make your `power` slot type has `on` & `off` as values. Once done, create 3 or more training examples for expected inputs.**
+
+<img width=500 height=300 src="images/create_power_slot_type.png" />
+
+<img width=500 height=300 src="images/lightState_training_examples.png" />
+
+You can now deploy your assistant! On the bottom right of the page will be a `Deploy Assistant` button.
+
+> If you don't see `Deploy Assistant`, increase your web browser's width.
+
+**Use the Sam CLI Tool to deploy the assistant to your Raspberry Pi.**
+
+<img src="images/deploy_assistant.png" />
 
 ## 6. Catching Intents In assistant.js
 <details close>
-<summary>New Assistant Code</summary>
+<summary>New assistant.js Code</summary>
 
 ```js
 // MATRIX Core Dependencies
@@ -133,7 +175,7 @@ var matrix_ip = '127.0.0.1';
 var matrix_everloop_base_port = 20021;
 var matrix_device_leds = 35;// Hard coded LED count
 // Snips.ai Dependencies
-var snipsUserName = "YOUR_SNIPS_USERNAME_HERE";
+var snipsUserName = 'YOUR_SNIPS_USERNAME_HERE';
 var mqtt = require('mqtt');
 var client = mqtt.connect('mqtt://' + matrix_ip, { port: 1883 });
 
@@ -154,7 +196,7 @@ function led(colors){
   configSocket.send(core.driver.DriverConfig.encode(config).finish());
 }
 
-// - Snips response property for our MQTT client
+// - Snips response property for your MQTT client
 client.snipsRespond = function(payload){
   client.publish('hermes/dialogueManager/endSession', JSON.stringify({
     sessionId: payload.sessionId,
@@ -175,45 +217,52 @@ client.on('connect', function() {
   client.subscribe(sessionEnd);
   client.subscribe(lightState); 
 });
+
 // On data from Snips' MQTT server
-var ledColors = {};
+lightsOn = false;
 client.on('message', function(topic, message) {
   // Extract message (convert string to JSON)
   var message = JSON.parse(message);
 
   switch(topic) {
-    // On Wakeword
+    // * On Wakeword
     case wakeword:
-      console.log('Wakeword Detected');
       led({blue: 100});
+      console.log('Wakeword Detected');
       break;
-
-    // On Light State Change
+    // * On Light State Change
     case lightState:
-      // set LEDs off
-      ledColors = {};
-      // see if user wants lights on
+      // Turn lights On/Off
       try{
-        if (message.slots[0].rawValue === 'on')
-          ledColors = {red: 255, green: 69};
-      }
-      finally{
-        // Apply LEDs
-        led(ledColors);
+        if (message.slots[0].rawValue === 'on'){
+          led({red: 255, green: 69});
+          lightsOn = true;
+          console.log("Lights On");
+        }
+        else{
+          led({});
+          lightsOn = false;
+          console.log("Lights Off");
+        }
         // Snips Response
         client.snipsRespond({
           sessionId: message.sessionId, 
           text: 'I have changed the lights!'
         });
+      }
+      finally{
+        lastCommand = 'lightState';
         break;
       }
-
-    // On Conversation End
+    // * On Conversation End
     case sessionEnd:
-      console.log('Session Ended');
+      if(lightsOn)
+        led({red: 255, green: 69});
+      else
+        led({});
+      console.log('Session Ended\n');
       break;
   }
-  
 });
 ```
 </details>
