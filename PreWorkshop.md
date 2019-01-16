@@ -18,6 +18,12 @@ Follow this section to prepare all the necessary hardware and software so you ca
 ### 1. Flashing Your Micro SD Card
 Before plugging in your Raspberry Pi, you'll need to flash your Micro SD Card. Download our custom [Raspbian Stretch image](https://events.hackster.io/armdevday#page-block-00wo26qig3709lbmb85p63whfr) and open etcher.io to begin flashing.
 
+#### What's inside our image?
+- [MATRIX Core](https://matrix-io.github.io/matrix-documentation/matrix-core/getting-started/core-installation/)
+- [MATRIX Kernel Modules](https://matrix-io.github.io/matrix-documentation/matrix-creator/resources/microphone/#usage)
+- [Snips](https://www.hackster.io/matrix-labs/matrix-voice-and-matrix-creator-running-snips-ai-b48344)
+
+
 ![](images/etcher_flashing.png)
 
 Once flashed, reinsert the Micro SD Card into your computer. A volume named `boot` should appear. The next step will have you add your WiFi configuration into this volume.
@@ -78,7 +84,7 @@ We highly recommend installing an SFTP client while following along with the wor
 Open an SSH enabled terminal application on your 
 - **Windows 7 or later**: [CyberDuck.io](https://cyberduck.io/)
 - **macOS**: [CyberDuck.io](https://cyberduck.io/)
-- **Linux**: [FileZilla](https://filezilla-project.org/) or mount the Pi as an external drive.
+- **Linux**: [FileZilla](https://filezilla-project.org/) or mount the Pi as an network drive.
 
 We will be using [CyberDuck.io](https://cyberduck.io/) to edit and upload files with our preferred text editor ([Visual Studio Code](https://code.visualstudio.com/)).
 
