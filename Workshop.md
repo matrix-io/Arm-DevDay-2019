@@ -151,9 +151,10 @@ Once you've defined your intent, you need to extract whether the user want their
 
 **Make your `power` slot type has `on` & `off` as values. Once done, create 3 or more training examples for expected inputs.**
 
-<img width=500 height=300 src="images/create_power_slot_type.png" />
-
-<img width=500 height=300 src="images/lightState_training_examples.png" />
+<div>
+    <img width=370 height=250 src="images/create_power_slot_type.png" />
+    <img width=370 height=250 src="images/lightState_training_examples.png" />
+</div>
 
 You can now deploy your assistant! On the bottom right of the page will be a `Deploy Assistant` button.
 
