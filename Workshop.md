@@ -18,10 +18,10 @@ Your MATRIX Creator should match the image below.
 ## 2. Connect Sam To Your Raspberry Pi
 By this step, you should have a [snips.ai account](https://console.snips.ai/login) and the [Sam CLI Tool](https://snips.gitbook.io/getting-started/installation) installed.
 
-<!-- **From your computer's terminal, sign in through the Sam CLI Tool.**
+**From your computer's terminal, sign in through the Sam CLI Tool.**
 ```bash
 sam login
-``` -->
+```
 
 **Connect to your Raspberry Pi.** When prompted for a username & password, you can press the enter key to insert the default Raspberry Pi credentials.
 ```bash
@@ -55,21 +55,65 @@ sam watch
 ## 3. Creating assistant.js
 This step will go show you how to setup a MATRIX Core project with Snips. `assistant.js` will be used to listen and respond to events from your Snips assistant
 
-**Create a new JavaScript file.**
+**Create 2 new JavaScript files.**
 ```bash
 cd ~/js-matrix-core-app
 touch assistant.js
+touch matrix.js
 ```
-**MQTT will be installed and used to listen in on events from Snips.**
+**MQTT must be installed and used to listen in on events from Snips.**
 ```bash
 npm install mqtt --save
 ```
-With all the required dependencies installed, you can now open `assistant.js ` with your preferred editor (we will be using [VSCode](https://code.visualstudio.com/) through [CyberDuck.io](https://cyberduck.io/)).
+With all the required dependencies installed, you can now open `assistant.js` & `matrix.js` with your preferred editor (we will be using [VSCode](https://code.visualstudio.com/) through [CyberDuck.io](https://cyberduck.io/)).
 
-Below is an example script for how to set your MATRIX LEDs and listen to Snips MQTT events.
+Below is an example script for how to set your MATRIX LEDs and listen to Snips MQTT events. 
+
 <details close>
 <summary>
-Initial assistant.js
+assistant.js: Logic for Snips assistant. 
+</summary>
+
+```js
+// MATRIX functions
+var matrix = require(__dirname+'/matrix.js');
+// Snips.ai Dependencies
+var mqtt = require('mqtt');
+var client = mqtt.connect('mqtt://' + '127.0.0.1', { port: 1883 });
+
+// MQTT Topics
+var wakeword = 'hermes/hotword/default/detected';
+var sessionEnd = 'hermes/dialogueManager/sessionEnded';
+
+// On connection to Snips' MQTT server
+client.on('connect', function() {
+  console.log("Connected to Snips MQTT server");
+  // Subscribe to each event (MQTT Topic)
+	client.subscribe(wakeword);
+  client.subscribe(sessionEnd);
+});
+
+// On data from Snips' MQTT server
+client.on('message', function(topic, message) {
+  switch(topic) {
+    // * On Wakeword
+    case wakeword:
+      matrix.led({blue: 100});
+      console.log('Wakeword Detected');
+      break;
+    // * On Conversation End
+    case sessionEnd:
+      matrix.led({});
+      console.log('Session Ended\n');
+      break;
+  }
+});
+```
+</details>
+
+<details close>
+<summary>
+matrix.js: Handy functions for MATRIX Core.
 </summary>
 
 ```js
@@ -77,23 +121,19 @@ Initial assistant.js
 var zmq = require('zeromq');
 var core = require('matrix-protos').matrix_io.malos.v1;
 var matrix_ip = '127.0.0.1';
-var matrix_everloop_base_port = 20021;
-var matrix_device_leds = 35;// Hard coded LED count
-// Snips.ai Dependencies
-var snipsUserName = 'YOUR_SNIPS_USERNAME_HERE';
-var mqtt = require('mqtt');
-var client  = mqtt.connect('mqtt://' + matrix_ip, { port: 1883 });
+var everloop_base_port = 20021;
+var led_count = 35;// # of LEDs on MATRIX device
 
-// - Easy MATRIX LED function
+// - Set MATRIX LEDs to an RGBW color
 function led(colors){
   // Create & connect Pusher socket to Base Port
   var configSocket = zmq.socket('push');
-  configSocket.connect('tcp://' + matrix_ip + ':' + matrix_everloop_base_port);
+  configSocket.connect('tcp://' + matrix_ip + ':' + everloop_base_port);
 
   // Create an empty Everloop image
   var image = core.io.EverloopImage.create();
   // Set each LED color in Everloop image
-  image.led = new Array(matrix_device_leds).fill(colors);
+  image.led = new Array(led_count).fill(colors);
 
   // Create MATRIX configuration and add Everloop image
   var config = core.driver.DriverConfig.create({'image': image});
@@ -101,28 +141,12 @@ function led(colors){
   configSocket.send(core.driver.DriverConfig.encode(config).finish());
 }
 
-// On connection to Snips' MQTT server
-client.on('connect', function() {
-  console.log("Connected to " + matrix_ip);
-  // Events to listen for
-	client.subscribe('hermes/hotword/default/detected');// Wakeword
-	client.subscribe('hermes/dialogueManager/sessionEnded');// Conversation end
-});
-// On data from Snips' MQTT server
-client.on('message', function(topic, message) {
-  switch(topic) {
-    // On Wakeword
-    case 'hermes/hotword/default/detected':
-      console.log('Wakeword Detected')
-      led({blue: 100});
-      break;
-    // On Conversation End
-    case 'hermes/dialogueManager/sessionEnded':
-      console.log('Session Ended');
-      led({});// lights off
-      break;
+// Export MATRIX functions
+module.exports = {
+  'led': function(colors){
+    led(colors);
   }
-});
+}
 ```
 </details>
 
@@ -161,7 +185,7 @@ You can now deploy your assistant! On the bottom right of the page will be a `De
 
 ## 6. Catching Intents In assistant.js
 <details close>
-<summary>New assistant.js Code</summary>
+<summary>assistant.js</summary>
 
 ```js
 // MATRIX Core Dependencies
