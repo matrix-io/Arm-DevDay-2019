@@ -87,7 +87,7 @@ var sessionEnd = 'hermes/dialogueManager/sessionEnded';
 
 // On connection to Snips' MQTT server
 client.on('connect', function() {
-  console.log("Connected to Snips MQTT server");
+  console.log('Connected to Snips MQTT server\n');
   // Subscribe to each event (MQTT Topic)
 	client.subscribe(wakeword);
   client.subscribe(sessionEnd);
@@ -175,6 +175,7 @@ Once you've defined your intent, you need to extract whether the user want their
     <img width=370 height=250 src="images/lightState_training_examples.png" />
 </div>
 
+## 6. Deploying An Assistant & Catching Intents
 You can now deploy your assistant! On the bottom right of the page will be a `Deploy Assistant` button.
 
 > If you don't see `Deploy Assistant`, increase your web browser's width.
@@ -183,40 +184,20 @@ You can now deploy your assistant! On the bottom right of the page will be a `De
 
 <img src="images/deploy_assistant.png" />
 
-## 6. Catching Intents In assistant.js
+The new code added to assistant.js will show you how to listen to `lightState` intents, read slots, and respond users.
+
 <details close>
 <summary>assistant.js</summary>
 
 ```js
-// MATRIX Core Dependencies
-var zmq = require('zeromq');
-var core = require('matrix-protos').matrix_io.malos.v1;
-var matrix_ip = '127.0.0.1';
-var matrix_everloop_base_port = 20021;
-var matrix_device_leds = 35;// Hard coded LED count
+// MATRIX functions
+var matrix = require(__dirname+'/matrix.js');
 // Snips.ai Dependencies
-var snipsUserName = 'YOUR_SNIPS_USERNAME_HERE';
 var mqtt = require('mqtt');
-var client = mqtt.connect('mqtt://' + matrix_ip, { port: 1883 });
+var client = mqtt.connect('mqtt://' + '127.0.0.1', { port: 1883 });
+var snipsUserName = 'YOUR_SNIPS_USERNAME_HERE';
 
-// - Sets MATRIX LEDs
-function led(colors){
-  // Create & connect Pusher socket to Base Port
-  var configSocket = zmq.socket('push');
-  configSocket.connect('tcp://' + matrix_ip + ':' + matrix_everloop_base_port);
-
-  // Create an empty Everloop image
-  var image = core.io.EverloopImage.create();
-  // Set each LED color in Everloop image
-  image.led = new Array(matrix_device_leds).fill(colors);
-
-  // Create MATRIX configuration and add Everloop image
-  var config = core.driver.DriverConfig.create({'image': image});
-  // Send configuration
-  configSocket.send(core.driver.DriverConfig.encode(config).finish());
-}
-
-// - Snips response property for your MQTT client
+// - Request Snips session end & utter text given
 client.snipsRespond = function(payload){
   client.publish('hermes/dialogueManager/endSession', JSON.stringify({
     sessionId: payload.sessionId,
@@ -231,11 +212,11 @@ var lightState = 'hermes/intent/'+snipsUserName+':lightState';
 
 // On connection to Snips' MQTT server
 client.on('connect', function() {
-  console.log("Connected to " + matrix_ip);
+  console.log('Connected to Snips MQTT server\n');
   // Subscribe to each event (MQTT Topic)
 	client.subscribe(wakeword);
   client.subscribe(sessionEnd);
-  client.subscribe(lightState); 
+  client.subscribe(lightState);
 });
 
 // On data from Snips' MQTT server
@@ -247,7 +228,7 @@ client.on('message', function(topic, message) {
   switch(topic) {
     // * On Wakeword
     case wakeword:
-      led({blue: 100});
+      matrix.led({blue: 100});
       console.log('Wakeword Detected');
       break;
     // * On Light State Change
@@ -255,14 +236,14 @@ client.on('message', function(topic, message) {
       // Turn lights On/Off
       try{
         if (message.slots[0].rawValue === 'on'){
-          led({red: 255, green: 69});
+          matrix.led({red: 255, green: 69});
           lightsOn = true;
-          console.log("Lights On");
+          console.log('Lights On');
         }
         else{
-          led({});
+          matrix.led({});
           lightsOn = false;
-          console.log("Lights Off");
+          console.log('Lights Off');
         }
         // Snips Response
         client.snipsRespond({
@@ -270,17 +251,18 @@ client.on('message', function(topic, message) {
           text: 'I have changed the lights!'
         });
       }
-      finally{
-        lastCommand = 'lightState';
-        break;
+      // Expect error if `on` or `off` is not heard
+      catch(e){
+        console.log('Did receive an On/Off state')
       }
+      break;
     // * On Conversation End
     case sessionEnd:
       if(lightsOn)
-        led({red: 255, green: 69});
+        matrix.led({red: 255, green: 69});
       else
-        led({});
-      console.log('Session Ended\n');
+        matrix.led({});
+        console.log('Session Ended\n');
       break;
   }
 });
