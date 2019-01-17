@@ -4,7 +4,7 @@ Follow this section to prepare all the necessary hardware and software so you ca
 ## Required Hardware
 - Everything inside the [MATRIX Workshop Kit](https://events.hackster.io/armdevday#page-block-00wo26qig3709lbmb85p63whfr).
 - Personal Computer with internet access.
-- An audio jack speaker (recommended, but not required).
+- An audio jack speaker (not required).
 
 ## Required Software
 - Personal Computer:

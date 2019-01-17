@@ -4,13 +4,9 @@ This section will cover everything in our Arm DevDay workshop. Before moving on,
 ## 1. Test MATRIX Core
 **In your Raspberry Pi's terminal**, Enter the commands below to verify that Node.js and MATRIX Core are properly working.
 
-**Install Node.js modules for MATRIX Core**
-```bash
-cd ~/js-matrix-core-app
-npm install
-```
 **Run Hello World**
 ```bash
+cd ~/js-matrix-core-app
 node helloWorld.js
 ```
 Your MATRIX Creator should match the image below.
@@ -22,11 +18,15 @@ Your MATRIX Creator should match the image below.
 ## 2. Connect Sam To Your Raspberry Pi
 By this step, you should have a [snips.ai account](https://console.snips.ai/login) and the [Sam CLI Tool](https://snips.gitbook.io/getting-started/installation) installed.
 
-**From your computer's terminal, sign in through the Sam CLI Tool.**
+<!-- **From your computer's terminal, sign in through the Sam CLI Tool.**
 ```bash
 sam login
-```
+``` -->
 
+**Connect to your Raspberry Pi.** When prompted for a username & password, you can press the enter key to insert the default Raspberry Pi credentials.
+```bash
+sam connect YOUR.PI.IP.HERE
+```
 **Check if Snips is running.**
 ```bash
 sam status
@@ -45,13 +45,8 @@ snips-hotword ................ 0.60.10 (running)
 snips-nlu .................... 0.60.10 (running)
 snips-skill-server ........... 0.60.10 (running)
 snips-tts .................... 0.60.10 (running)
-
 ```
 
-**Connect to your Raspberry Pi.**
-```bash
-sam connect YOUR.PI.IP.HERE
-```
 **Begin viewing the Snips event stream.** This will let us verify if your intents are being heard.
 ```bash
 sam watch
@@ -136,7 +131,7 @@ client.on('message', function(topic, message) {
 
 <img width=600 src="images/create_assistant_and_app.gif" />
 
-## 5. Adding an Intent
+## 5. Adding An Intent To Your App
 Intents are what Snips uses to handle user requests. For this Assistant, we'll start by creating an intent for turning On/Off the MATRIX Creator's LEDs.
 
 **Create a new intent called `lightState` for your `lights` app.**
