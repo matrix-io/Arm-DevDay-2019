@@ -55,6 +55,8 @@ sam watch
 ## 3. Creating assistant.js
 This step will go show you how to setup a MATRIX Core project with Snips. `assistant.js` will be used to listen and respond to events from your Snips assistant
 
+**These files will go on your Raspberry Pi.**
+
 Create 2 new JavaScript files.
 ```bash
 cd ~/js-matrix-core-app
@@ -168,23 +170,30 @@ Create a new slot called `power` and a custom slot type with the same name.
 
 <img width=500 src="images/create_power_slot.png" />
 
-**Make your `power` slot type has `on` & `off` as values. Once done, create 3 or more training examples for expected inputs.**
+Make sure your `power` slot type has `on` & `off` as values.
 
-<div>
-    <img width=370 height=250 src="images/create_power_slot_type.png" />
-    <img width=370 height=250 src="images/lightState_training_examples.png" />
-</div>
+<img width=370 src="images/create_power_slot_type.png" />
+
+Create example sentences containing the words **on** and **off**. Highlight these words in your example sentences to assign them to your recently created `power` slot.
+
+<img width=370 src="images/lightState_training_examples.png" />
+
+Be sure to save!
+> Button is on the bottom right corner of the page.
+
+<img width=100 src="images/snips_save_button.png" />
+
 
 ## 6. Deploying An Assistant & Catching Intents
 You can now deploy your assistant! On the bottom right of the page will be a `Deploy Assistant` button.
 
 > If you don't see `Deploy Assistant`, increase your web browser's width.
 
-**Use the Sam CLI Tool to deploy the assistant to your Raspberry Pi.**
+Use the Sam CLI Tool to deploy the assistant to your Raspberry Pi. Below is an example of the command to use.
 
 <img src="images/deploy_assistant.png" />
 
-The new code added to assistant.js will show you how to listen to `lightState` intents, read slots, and respond users.
+The new code added to assistant.js will show you how to listen to `lightState` intents, read slots, and respond to users.
 
 <details close>
 <summary>assistant.js</summary>
@@ -358,7 +367,7 @@ module.exports = {
 </details>
 
 ## 8. Create A Temperature App & Intent
-Moving back to your Snip dashboard, add a new app to the assistant you recently created. The app should be named `temperature`.
+Moving back to your Snips dashboard, add a new app to the assistant you recently created. The app should be named `temperature`.
 
 <img width=500 src="images/create_temperature_app.png" />
 
@@ -366,9 +375,15 @@ Add an intent named `getTemperature` to handle user queries for the current temp
 
 <img width=550 src="images/create_temperature_intent.png" />
 
-Almost there! The last step of the `getTemperature` intent is to add a custom slot named `temperature` and a custom value that uses the same name. Be sure to add 3 or more training samples. You can now deploy your assistant with the same instructions from [step 6](#6-deploying-an-assistant--catching-intents).
+Almost there! The last step of the `getTemperature` intent is to add a custom slot named `temperature` and a custom value that uses the same name. Be sure to add 3 or more training samples.
 
 <img src="images/create_temperature_slot_and_training.png" />
+
+You can update your assistant with the following Sam CLI command:
+
+```bash
+sam update-assistant
+```
 
 ## 9. Catching The Temperature Intent
 The `assistant.js` code below add a new case, inside the switch statement, to catch a user's request for the current temperature.
