@@ -51,6 +51,9 @@ network={
 
 After you verify that your information is correct, drag & drop the file into the `boot` volume. You can now eject and insert the Micro SD Card into your Raspberry Pi. The MATRIX Creator should be attached as well.
 
+![](images/boot_volume.png)
+
+
 ### 3. SSH Into Your Raspberry Pi
 The following steps will allow you to remotely execute terminal commands to your Raspberry Pi from your computer.
 
@@ -58,14 +61,14 @@ Before powering on, ensure that your setup matches the gif below. Your Raspberry
 
 ![](images/device_setup.gif)
 
-It's now time to grab the IP Address of your Pi. If you're not sure how, you can download one of the following network scanners to your smartphone.
+It's now time to grab the IP Address of your Raspberry Pi. If you're not sure how, you can download one of the following network scanners to your smartphone.
 
 <div align="center">
 <a href="https://itunes.apple.com/us/app/inet-network-scanner/id340793353?mt=8"><img width="200" src="images/ios_logo.png"/></a>
 <a href="https://play.google.com/store/apps/details?id=com.overlook.android.fing&hl=en"><img width="200" src="images/google_play_logo.png"/></a>
 </div>
 
-Open an SSH enabled terminal application on your computer:
+After you've found your Pi's IP Address, Open an SSH enabled terminal application on your computer:
 - **Windows 10**: PowerShell
 - **macOS/Linux**: Terminal
 - **Windows 7 & 8**: [Download Putty](https://www.putty.org/)
@@ -83,8 +86,8 @@ When prompted for a password, type `raspberry` followed by the enter key. Your t
 
 <img width=700 src="images/pi_login_screen.png" />
 
-### 4. Download An SFTP Client (Optional)
-We highly recommend installing an SFTP client while following along with the workshop. 
+### 4. Download An SFTP Client
+We highly recommend installing an SFTP client while following along with the workshop. This enables you to easily manage the file on your Raspberry Pi from your personal computer.
 
 Open an SSH enabled terminal application on your 
 - **Windows 7 or later**: [CyberDuck.io](https://cyberduck.io/)
