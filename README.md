@@ -4,7 +4,7 @@ Workshop for Arm DevDay. All the code used in our workshop will be added
 here, as well as the general instructions we are following.
 
 ## Overview
-The content for this workshop will show you how to create an offline voice assistant with the [MATRIX Creator](https://www.matrix.one/products/creator) and [Snips.ai](https://snips.ai/). The pre-workshop guide contains all the setup required to follow along on Arm DevDay (Tuesday, Jan 22). To save installation time, We've included a custom image with MATRIX dependancies & Snips preinstalled.
+The content for this workshop will show you how to create an offline voice assistant using the [MATRIX Creator](https://www.matrix.one/products/creator) and [Snips.ai](https://snips.ai/). The pre-workshop guide contains all the setup required to follow along on Arm DevDay (Tuesday, Jan 22). To save installation time, We've included a custom image with MATRIX dependancies & Snips preinstalled.
 
 ## Guides:
 
