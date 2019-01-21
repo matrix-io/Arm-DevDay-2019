@@ -8,9 +8,9 @@ Follow this section to prepare all the necessary hardware and software so you ca
 
 ## Required Software
 - Personal Computer:
-  - [Node.js](https://nodejs.org/en/)
-  - [Etcher.io](https://www.balena.io/etcher/)
-  - Snips' [Sam CLI Tool](https://snips.gitbook.io/getting-started/installation)
+  - [Node.js](https://nodejs.org/en/): Dependancy for Sam CLI Tool.
+  - [Etcher.io](https://www.balena.io/etcher/): To easily flash our Raspbian Stretch image.
+  - Snips' [Sam CLI Tool](https://snips.gitbook.io/getting-started/installation): Creates & manages Snip assistants on your Raspberry Pi.
 - Registered [snips.ai](https://snips.ai/) account.
 
 ## Raspberry Pi Setup
@@ -18,11 +18,16 @@ Follow this section to prepare all the necessary hardware and software so you ca
 ### 1. Flashing Your Micro SD Card
 Before plugging in your Raspberry Pi, you'll need to flash your Micro SD Card. Download our custom [Raspbian Stretch image](https://events.hackster.io/armdevday#page-block-00wo26qig3709lbmb85p63whfr) and open etcher.io to begin flashing.
 
-#### What's inside our image?
+<details>
+<summary>
+What's inside our image?
+</summary>
+
+Aside from the following dependancies, our image is a slimmed down Raspbian Stretch (Desktop). These dependancies are listed here, if you wish to replicate this in another setup.
 - [MATRIX Core](https://matrix-io.github.io/matrix-documentation/matrix-core/getting-started/core-installation/)
 - [MATRIX Kernel Modules](https://matrix-io.github.io/matrix-documentation/matrix-creator/resources/microphone/#usage)
 - [Snips](https://www.hackster.io/matrix-labs/matrix-voice-and-matrix-creator-running-snips-ai-b48344)
-
+</details>
 
 ![](images/etcher_flashing.png)
 
