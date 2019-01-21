@@ -17,7 +17,9 @@ Follow this section to prepare all the necessary hardware and software so you ca
 ## Raspberry Pi Setup
 
 ### 1. Flashing Your Micro SD Card
-Before plugging in your Raspberry Pi, you'll need to flash its Micro SD Card. **Download our custom [Raspbian Stretch image](https://drive.google.com/file/d/1BwfOPoX1OVgYHEb_pGjwIlSGQ_Sg8kxL/view) and open etcher.io to begin flashing.**
+Before plugging in your Raspberry Pi, you'll need to flash its Micro SD Card. 
+
+**Download our custom [Raspbian Stretch image](https://drive.google.com/file/d/1BwfOPoX1OVgYHEb_pGjwIlSGQ_Sg8kxL/view) and open etcher.io to begin flashing.**
 
 <details>
 <summary>
