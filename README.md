@@ -10,7 +10,7 @@ The content for this workshop will show you how to create an offline voice assis
 
 - ### [Pre-Workshop Setup](PreWorkshop.md)
 
-- ### ~~[Workshop Guide](Workshop.md)~~ (Coming Soon)
+- ### [Workshop Guide](Workshop.md)
 
 ## Resources:
 - ### [Arm DevDay Website](https://events.hackster.io/armdevday)
