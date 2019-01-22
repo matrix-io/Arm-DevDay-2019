@@ -1,7 +1,7 @@
 # Workshop Guide
 This section will cover everything in our Arm DevDay workshop. Before moving on, make sure that you have everything ready from the [Pre-Workshop Setup](PreWorkshop.md).
 
-## 1. Test MATRIX Core
+## 1. Test helloworld.js
 In your Raspberry Pi's terminal, Enter the commands below to verify that Node.js and MATRIX Core are properly working.
 
 Run Hello World
