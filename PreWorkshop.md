@@ -27,7 +27,7 @@ What's inside our image?
 </summary>
 
 Aside from the following dependancies, our image is a slimmed down Raspbian Stretch (Desktop). These dependancies are listed here, if you wish to replicate this in another setup.
-- [MATRIX Core](https://matrix-io.github.io/matrix-documentation/matrix-core/getting-started/core-installation/)
+- [MATRIX Core & JavaScript Setup](https://matrix-io.github.io/matrix-documentation/matrix-core/getting-started/core-installation/)
 - [MATRIX Kernel Modules](https://matrix-io.github.io/matrix-documentation/matrix-creator/resources/microphone/#usage)
 - [Snips](https://www.hackster.io/matrix-labs/matrix-voice-and-matrix-creator-running-snips-ai-b48344)
 </details>
