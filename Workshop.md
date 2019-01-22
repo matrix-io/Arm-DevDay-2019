@@ -11,8 +11,6 @@ node helloWorld.js
 ```
 Your MATRIX Creator should match the image below.
 
-> For your sanity, LED brightness has been lowered.
-
 ![](images/matrix-hello-world.gif)
 
 ## 2. Connect Sam To Your Raspberry Pi
@@ -204,9 +202,16 @@ var matrix = require(__dirname+'/matrix.js');
 // Snips.ai Dependencies
 var mqtt = require('mqtt');
 var client = mqtt.connect('mqtt://' + '127.0.0.1', { port: 1883 });
-var snipsUserName = 'YOUR_SNIPS_USERNAME_HERE';//NEW ADDITION
 
-//NEW ADDITION
+////////////////
+//NEW ADDITION//
+var snipsUserName = 'YOUR_SNIPS_USERNAME_HERE';
+//END OF NEW ADDITION//
+///////////////////////
+
+////////////////
+//NEW ADDITION//
+
 // - Request Snips session end & utter text given
 client.snipsRespond = function(payload){
   client.publish('hermes/dialogueManager/endSession', JSON.stringify({
@@ -214,11 +219,19 @@ client.snipsRespond = function(payload){
     text: payload.text
   }));
 };
+//END OF NEW ADDITION//
+///////////////////////
+
 
 // MQTT Topics
 var wakeword = 'hermes/hotword/default/detected';
 var sessionEnd = 'hermes/dialogueManager/sessionEnded';
-var lightState = 'hermes/intent/'+snipsUserName+':lightState';//NEW ADDITION
+
+////////////////
+//NEW ADDITION//
+var lightState = 'hermes/intent/'+snipsUserName+':lightState';
+//END OF NEW ADDITION//
+///////////////////////
 
 // On connection to Snips' MQTT server
 client.on('connect', function() {
@@ -226,14 +239,31 @@ client.on('connect', function() {
   // Subscribe to each event (MQTT Topic)
 	client.subscribe(wakeword);
   client.subscribe(sessionEnd);
-  client.subscribe(lightState);//NEW ADDITION
+  
+////////////////
+//NEW ADDITION//
+  client.subscribe(lightState);
+//END OF NEW ADDITION//
+///////////////////////
+
 });
 
+////////////////
+//NEW ADDITION//
+
 // On data from Snips' MQTT server
-var lightsOn = false;//NEW ADDITION
+var lightsOn = false;
+//END OF NEW ADDITION//
+///////////////////////
+
 client.on('message', function(topic, message) {
+
+////////////////
+//NEW ADDITION//
   // Extract message (convert string to JSON)
-  var message = JSON.parse(message);//NEW ADDITION
+  var message = JSON.parse(message);
+//END OF NEW ADDITION//
+///////////////////////
 
   switch(topic) {
     // * On Wakeword
@@ -241,7 +271,9 @@ client.on('message', function(topic, message) {
       matrix.led({blue: 100});
       console.log('Wakeword Detected');
       break;
-    //NEW ADDITION
+      
+////////////////
+//NEW ADDITION//
     // * On Light State Change
     case lightState:
       // Turn lights On/Off
@@ -267,14 +299,22 @@ client.on('message', function(topic, message) {
         console.log('Did receive an On/Off state')
       }
       break;
+//END OF NEW ADDITION//
+///////////////////////      
+      
     // * On Conversation End
     case sessionEnd:
-      //NEW ADDITION
+    
+////////////////
+//NEW ADDITION//
       if(lightsOn)
         matrix.led({red: 255, green: 69});
       else
         matrix.led({});
         console.log('Session Ended\n');
+//END OF NEW ADDITION//
+///////////////////////
+
       break;
   }
 });
@@ -297,7 +337,13 @@ var zmq = require('zeromq');
 var core = require('matrix-protos').matrix_io.malos.v1;
 var matrix_ip = '127.0.0.1';
 var everloop_base_port = 20021;
-var matrix_humidity_base_port = 20017;//NEW ADDITION
+
+////////////////
+//NEW ADDITION//
+var matrix_humidity_base_port = 20017;
+//END OF NEW ADDITION//
+///////////////////////
+
 var led_count = 35;// # of LEDs on MATRIX device
 
 ////////////////////////
@@ -320,7 +366,9 @@ function led(colors){
   configSocket.send(core.driver.DriverConfig.encode(config).finish());
 }
 
-//NEW ADDITION
+////////////////
+//NEW ADDITION//
+
 ////////////////////////
 // TEMPERATURE
 ///////////////////////
@@ -359,6 +407,9 @@ updateSocket.on('message', function(buffer){
     module.exports.temperature = data.temperature;
 });
 
+//END OF NEW ADDITION//
+///////////////////////
+
 ////////////////////////
 // EXPORTED FUNCTIONS
 ///////////////////////
@@ -366,8 +417,13 @@ module.exports = {
   'led': function(colors){
     led(colors);
   },
-  //NEW ADDITION
+  
+////////////////
+//NEW ADDITION//
   'temperature': 0
+//END OF NEW ADDITION//
+///////////////////////
+  
 }
 ```
 </details>
@@ -417,8 +473,12 @@ client.snipsRespond = function(payload){
 var wakeword = 'hermes/hotword/default/detected';
 var sessionEnd = 'hermes/dialogueManager/sessionEnded';
 var lightState = 'hermes/intent/'+snipsUserName+':lightState';
-//NEW ADDITION
+
+////////////////
+//NEW ADDITION//
 var getTemperature = 'hermes/intent/'+snipsUserName+':getTemperature';
+//END OF NEW ADDITION//
+///////////////////////
 
 // On connection to Snips' MQTT server
 client.on('connect', function() {
@@ -427,7 +487,13 @@ client.on('connect', function() {
 	client.subscribe(wakeword);
   client.subscribe(sessionEnd);
   client.subscribe(lightState);
-  client.subscribe(getTemperature);//NEW ADDITION
+  
+////////////////
+//NEW ADDITION//
+  client.subscribe(getTemperature);
+//END OF NEW ADDITION//
+///////////////////////
+  
 });
 
 // On data from Snips' MQTT server
@@ -442,7 +508,9 @@ client.on('message', function(topic, message) {
       matrix.led({blue: 100});
       console.log('Wakeword Detected');
       break;
-    //NEW ADDITION
+      
+////////////////
+//NEW ADDITION//
     // * On Temperature Requested
     case getTemperature:
       // Snips Response
@@ -451,6 +519,9 @@ client.on('message', function(topic, message) {
         text: 'The current temperature is ' + Math.trunc(matrix.temperature) + ' degrees Celsius.'
       });
       break;
+//END OF NEW ADDITION//
+///////////////////////
+      
     // * On Light State Change
     case lightState:
       // Turn lights On/Off
