@@ -10,7 +10,7 @@ Follow this section to prepare all the necessary hardware and software so you ca
 - Personal Computer:
   - [Node.js](https://nodejs.org/en/): Dependancy for Sam CLI Tool.
   - [Etcher.io](https://www.balena.io/etcher/): To easily flash our Raspbian Stretch image.
-  - Snips' [Sam CLI Tool](https://snips.gitbook.io/getting-started/installation): Creates & manages Snip assistants on your Raspberry Pi.
+  - Snips' [Sam CLI Tool](https://docs.snips.ai/getting-started/quick-start-raspberry-pi#step-3-install-the-snips-platform): Creates & manages Snip assistants on your Raspberry Pi.
   > Windows users may need to run their terminal session as Administrator when installing the Sam CLI Tool.
 - Registered [snips.ai](https://snips.ai/) account.
 
