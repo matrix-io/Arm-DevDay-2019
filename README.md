@@ -1,4 +1,4 @@
-🚨THIS GUIDE HAS BEEN DEPRECATED🚨
+# 🚨 THIS GUIDE HAS BEEN DEPRECATED 🚨
 
 The [Snips Console has been closed](https://forum.snips.ai/t/important-message-regarding-the-snips-console/4145) and cannot be used anymore.
 
