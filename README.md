@@ -1,3 +1,7 @@
+🚨THIS GUIDE HAS BEEN DEPRECATED🚨
+
+The [Snips Console has been closed](https://forum.snips.ai/t/important-message-regarding-the-snips-console/4145) and cannot be used anymore.
+
 # MATRIX Workshop
 This repository contains all the steps needed to set up and follow our
 Workshop for Arm DevDay. All the code used in our workshop will be added
